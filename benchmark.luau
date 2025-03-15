@@ -15,7 +15,7 @@ local function benchmark(funcs, runs, undo)
             -- Run only once.
             local start = os.clock()
             func()
-            return start - os.clock()
+            return os.clock() - start
         else
             -- Run specified amount of times.
             local sum = 0
