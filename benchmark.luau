@@ -5,11 +5,11 @@ local function difference(a, b)
 		return b - a
 	end
 end
-local function benchmark(funcs, runs)
-	if type(runs) ~= "number" or runs <= 1 then runs = nil end
+local function benchmark(funcs, iterations)
+	if type(iterations) ~= "number" or iterations <= 1 then iterations = nil end
 	
 	local function measure(func)
-		if runs == nil then
+		if iterations == nil then
 			-- Run only once.
 			local start = os.clock()
 			func()
@@ -17,12 +17,12 @@ local function benchmark(funcs, runs)
 		else
 			-- Run specified amount of times.
 			local sum = 0
-			for index = 1, runs, 1 do
+			for index = 1, iterations, 1 do
 				local start = os.clock()
 				func()
 				sum += os.clock() - start
 			end
-			return sum/runs -- Calculate average run time.
+			return sum/iterations -- Calculate average run time.
 		end
 	end
 	
@@ -37,7 +37,7 @@ local function benchmark(funcs, runs)
 			local diff = difference(one, two)
 			local fastest = if two < one then two else one
 			
-			if diff < fastest*0.001 then
+			if diff < fastest*0.005 then
 				-- Basically identical speeds.
 				if two < one then
 					output ..= "\n⚖️ Both functions measured at "..tostring(two+diff/2).." milliseconds\n"
@@ -92,5 +92,5 @@ benchmark(
 			
 		end,
 	},
-	100 -- Runs (higher is more accuracy, but takes longer).
+	100 -- Iterations (higher is more accuracy, but takes longer).
 )
